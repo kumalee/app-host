@@ -93,14 +93,18 @@ class Pkg < ApplicationRecord
 
   def install_url
     if ios?
-      "itms-services://?action=download-manifest&url=#{Current.request.base_url}#{Rails.application.routes.url_helpers.manifest_pkg_path(self)}.plist"    
+      du = "itms-services://?action=download-manifest&url=#{Current.request.base_url}#{Rails.application.routes.url_helpers.manifest_pkg_path(self)}.plist"    
+      du["http"] = "https"
+      return du
     else
       download_url
     end
   end
 
   def download_url
-    "#{Current.request.base_url}#{self.file}"
+    du = "#{Current.request.base_url}#{self.file}"
+    du["http"] = "https"
+    return du
   end
 
   def display_file_name
