@@ -49,6 +49,43 @@ ps:数据库和上传的文件会保存在 ./shared 文件夹中
 ## 关于 https
 1. https其实不属于本项目涉及的范畴，大家可以 google 一下 https 证书配置，挂 nginx 或者 apache 上都行，有条件的可以购买域名证书，没条件的自签名证书也是可以的
 
+2. nginx反代到docker container nginx service 的配置
+```sh
+upstream apphost {
+    server localhost:3000;
+}
+
+server {
+    listen      80;
+    server_name apphost.example.com;
+    return 301 https://$http_host$request_uri;
+}
+
+server {
+    server_name apphost.example.com;
+
+    client_max_body_size 500M;
+
+    location / {
+       proxy_redirect off;
+       proxy_set_header Host $http_host;
+       proxy_set_header X-Real-IP $remote_addr;
+       proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+       proxy_set_header X-Forwarded-Proto $scheme;
+       proxy_pass http://apphost;
+    }
+
+    listen 443 ssl; # managed by Certbot
+    ssl_certificate /etc/letsencrypt/live/apphost.example.com/fullchain.pem; # managed by Certbot
+    ssl_certificate_key /etc/letsencrypt/live/apphost.example.com/privkey.pem; # managed by Certbot
+    include /etc/letsencrypt/options-ssl-nginx.conf; # managed by Certbot
+    ssl_dhparam /etc/letsencrypt/ssl-dhparams.pem; # managed by Certbot
+}
+```
+启动命令
+```sh
+docker run -d --name app_host -h app_host -v /opt/app-host-data:/app/shared -p 3000:8686 kumali/app-host:latest
+```
 ## 已知问题
 1. apk 包如果是非图片 logo，会无法显示 logo，因为目前还没实现 xml logo 的解析
 2. 如果不配置 https，ipa 将无法安装
