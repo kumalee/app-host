@@ -5,6 +5,9 @@ class PkgsController < ApplicationController
 
 
   def show
+    unless signed_in?
+      redirect_to new_session_path and return
+    end
     @pkg = Pkg.find params[:id]
     history = Pkg.where("id < ?",@pkg.id).limit(20).where(plat_id:@pkg.plat_id).id_desc
     history.each do |e|
@@ -26,6 +29,9 @@ class PkgsController < ApplicationController
   end
 
   def new
+    unless signed_in?
+      redirect_to new_session_path and return
+    end
     @pkg = @plat.pkgs.build
   end
 

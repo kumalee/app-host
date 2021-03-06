@@ -1,12 +1,18 @@
 class UsersController < ApplicationController
 
   def index
+    unless signed_in?
+      redirect_to new_session_path and return
+    end
     @users = User.id_desc.page(params[:page]).per(params[:per])
   end
 
   def new
     unless User.admin.exists?
       @init_admin = true
+    end
+    unless signed_in?
+      redirect_to new_session_path and return
     end
     @user = User.admin.new
   end
@@ -30,6 +36,9 @@ class UsersController < ApplicationController
   end
 
   def edit
+    unless signed_in?
+      redirect_to new_session_path and return
+    end
     @user = User.find_by_id params[:id]
   end
 

@@ -3,6 +3,9 @@ class PlatsController < ApplicationController
   before_action :set_plat, only: [:show,:destroy,:update,:edit]
 
   def index
+    unless signed_in?
+      redirect_to new_session_path and return
+    end
     @plats = Plat.where(app_id:params[:app_id])
     if @plats.present?
       redirect_to app_plat_path @plats.first.app, @plats.first
@@ -12,11 +15,17 @@ class PlatsController < ApplicationController
   end
 
   def show
+    unless signed_in?
+      redirect_to new_session_path and return
+    end
     @pkgs = @plat.pkgs.id_desc.page(params[:page]).per(params[:per])
     @plats = Plat.where(app_id:params[:app_id]).order(:sort,:id)
   end
 
   def new
+    unless signed_in?
+      redirect_to new_session_path and return
+    end
     @plat = @app.plats.build
   end
 
@@ -38,6 +47,9 @@ class PlatsController < ApplicationController
   end
 
   def edit
+    unless signed_in?
+      redirect_to new_session_path and return
+    end
     render "new"
   end
 

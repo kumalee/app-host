@@ -5,15 +5,24 @@ class AppsController < ApplicationController
     unless User.admin.exists?
       redirect_to new_user_path and return
     end
+    unless signed_in?
+      redirect_to new_session_path and return
+    end
     @apps = App.active.all
     @has_archived = App.archived.count > 0
   end
 
   def show
+    unless signed_in?
+      redirect_to new_session_path and return
+    end
     redirect_to app_plats_path @app
   end
 
   def new
+    unless signed_in?
+      redirect_to new_session_path and return
+    end
     @app = App.new
   end
 
@@ -24,6 +33,9 @@ class AppsController < ApplicationController
   end
 
   def edit
+    unless signed_in?
+      redirect_to new_session_path and return
+    end
     render 'new'
   end
 
@@ -40,6 +52,9 @@ class AppsController < ApplicationController
   end
 
   def archived
+    unless signed_in?
+      redirect_to new_session_path and return
+    end
     @apps = App.archived.all
   end
 

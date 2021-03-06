@@ -8,10 +8,16 @@ class UdidController < ApplicationController
   end
 
   def index
+    unless signed_in?
+      redirect_to new_session_path and return
+    end
     @udid = params[:udid]
   end
 
   def mobileconfig
+    unless signed_in?
+      redirect_to new_session_path and return
+    end
     path = Rails.root.join("public/ota_helper.mobileconfig")
     mobileconfig = File.read(path)
     mobileconfig.gsub! '__URL__', "#{request.base_url}/udid"
