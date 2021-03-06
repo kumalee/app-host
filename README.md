@@ -37,13 +37,32 @@ ps:数据库和上传的文件会保存在 ./shared 文件夹中
 
 ## 用法 3 源码运行
 ```
-1. > git clone https://github.com/pluosi/app-host.git /opt/app-host
-2. > cd /opt/app-host
-4. 修改 config/secrets.yml 中 `production下的secret_key_base` ,可以运行`rake secret`得到
-5. bundle install
-6. rails s 运行测试环境
-7. 关于部署到生成环境的话请参照一下 rails puma 部署等教程，需要修改一下 config/deply.rb 的部署地址
-8. 尝试访问 http://localhost:3000
+0. > brew install rbenv
+1. > rbenv install 2.5.1
+2. write init script to your .bashrc or .zshrc
+```
+# setting rbenv
+if command -v rbenv 1>/dev/null 2>&1; then
+  eval "$(rbenv init -)"
+  eval "$(rbenv global 2.5.1)"
+fi
+```
+3. open a new terminal window
+4. gem install bundler -v '1.16.1'
+5. > git clone https://github.com/pluosi/app-host.git /opt/app-host
+6. > cd /opt/app-host
+7. 修改 config/secrets.yml 中 `production下的secret_key_base` ,可以运行`rake secret`得到
+8. bundle install
+  如果出现 libv8 安装错误提示，请使用如下命令继续
+  - gem install libv8 -v '3.16.14.19' -- --with-system-v8
+  - brew install v8-315
+  - gem install therubyracer -v '0.12.3' -- --with-v8-dir='/usr/local/opt/v8@3.15'
+9. > gem install rails
+10. > rbenv rehash 刷新rbenv缓存，否则找不到 rails 命令
+10. > rails db:migrate RAILS_ENV=development
+10. rails s 运行测试环境
+11. 关于部署到生成环境的话请参照一下 rails puma 部署等教程，需要修改一下 config/deply.rb 的部署地址
+12. 尝试访问 http://localhost:3000
 ```
 
 ## 关于 https
