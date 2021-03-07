@@ -100,7 +100,12 @@ class Pkg < ApplicationRecord
   end
 
   def download_url
-    "#{Current.request.base_url}#{self.file}"
+    "#{Current.request.base_url}/pkgs/#{self.id}/download"
+    # "#{Current.request.base_url}#{self.file}"
+  end
+
+  def send_path
+    "#{Rails.root}/public#{self.file}"
   end
 
   def display_file_name
