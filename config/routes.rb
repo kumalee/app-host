@@ -25,6 +25,12 @@ Rails.application.routes.draw do
     end
   end
 
+  resources :pkgs, only:[:validate] do
+    member do
+      get :validate
+    end
+  end
+
   resources :udid, only:[:create,:index] do
     collection do
       get "mobileconfig"

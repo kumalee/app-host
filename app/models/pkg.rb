@@ -100,7 +100,12 @@ class Pkg < ApplicationRecord
   end
 
   def download_url
-    "#{Current.request.base_url}#{self.file}"
+    "#{Current.request.base_url}#{self.file}?id=#{self.id}&token=#{download_token}"
+  end
+
+  def download_token
+    raw_key = "#{self.id}#{Date.current().strftime('%Y%m%d')}"
+    "#{Base64.strict_encode64(raw_key)}"
   end
 
   def display_file_name
