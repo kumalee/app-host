@@ -15,6 +15,8 @@ RUN gem install bundler
 
 WORKDIR /app
 
+VOLUME ["/etc/nginx"]
+
 ADD Gemfile* ./
 RUN bundle install
 COPY . .

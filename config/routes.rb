@@ -25,13 +25,6 @@ Rails.application.routes.draw do
     end
   end
 
-  resources :pkgs, only:[:download] do
-    member do
-      get :download
-    end
-  end
-
-
   resources :udid, only:[:create,:index] do
     collection do
       get "mobileconfig"

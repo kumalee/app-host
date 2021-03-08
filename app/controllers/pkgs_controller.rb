@@ -31,14 +31,6 @@ class PkgsController < ApplicationController
     render xml: stream
   end
 
-  def download
-    unless signed_in?
-      redirect_to new_session_path and return
-    end
-    @pkg = Pkg.find params[:id]
-    send_file(@pkg.send_path)
-  end
-
   def new
     unless signed_in?
       redirect_to new_session_path and return
