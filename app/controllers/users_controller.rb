@@ -12,10 +12,10 @@ class UsersController < ApplicationController
       unless signed_in?
         redirect_to new_session_path and return
       end
-      @init_admin = true
     else
-      @user = User.admin.new
+      @init_admin = true
     end
+    @user = User.admin.new
   end
 
   def create
