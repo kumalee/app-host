@@ -8,13 +8,14 @@ class UsersController < ApplicationController
   end
 
   def new
-    unless User.admin.exists?
+    if User.admin.exists?
+      unless signed_in?
+        redirect_to new_session_path and return
+      end
       @init_admin = true
+    else
+      @user = User.admin.new
     end
-    unless signed_in?
-      redirect_to new_session_path and return
-    end
-    @user = User.admin.new
   end
 
   def create
