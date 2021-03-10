@@ -1,5 +1,5 @@
 class PkgsController < ApplicationController
-  protect_from_forgery :except => [:api_create]
+  protect_from_forgery :except => [:api_create, :validate]
 
   before_action :set_plat, only: [:new,:create]
 
@@ -23,12 +23,35 @@ class PkgsController < ApplicationController
 
   #ios install manifest file
   def manifest
-    unless signed_in?
-      redirect_to new_session_path and return
-    end
+    token = params[:token]
     @pkg = Pkg.find params[:id]
-    stream = render_to_string(:template=>"pkgs/manifest.xml" )  
-    render xml: stream
+    if (@pkg.download_token == token)
+      stream = render_to_string(:template=>"pkgs/manifest.xml" )
+      render xml: stream
+    else
+      render status: 403, json: { isSuccess: false, error: "Invalid Token"}
+    end
+  end
+
+  # validate download token
+  def validate
+    origin_url = request.headers["X-Original-URI"]
+    result = false
+    query_params = ''
+    if (origin_url)
+      uri = URI.parse(origin_url)
+      # then use CGI.parse to parse the query string into a hash of names and values
+      query_params = CGI.parse(uri.query)
+      @pkg = Pkg.find query_params["id"][0]
+      if (query_params["token"][0] == @pkg.download_token)
+        result = true
+      end
+    end
+    if (result)
+      render status: 200, json: { isSuccess: true, url: origin_url, id: query_params["id"][0], token: query_params["token"][0]}
+    else
+      render status: 403, json: { isSuccess: false, url: origin_url, param: query_params}
+    end
   end
 
   def new

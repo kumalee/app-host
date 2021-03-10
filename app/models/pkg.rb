@@ -93,14 +93,19 @@ class Pkg < ApplicationRecord
 
   def install_url
     if ios?
-      "itms-services://?action=download-manifest&url=#{Current.request.base_url}#{Rails.application.routes.url_helpers.manifest_pkg_path(self)}.plist"    
+      "itms-services://?action=download-manifest&url=#{Current.request.base_url}#{Rails.application.routes.url_helpers.manifest_pkg_path(self)}.plist%3Fid%3D#{self.id}%26token%3D#{download_token}"    
     else
       download_url
     end
   end
 
   def download_url
-    "#{Current.request.base_url}#{self.file}"
+    "#{Current.request.base_url}#{self.file}?id=#{self.id}&token=#{download_token}"
+  end
+
+  def download_token
+    raw_key = "#{self.id}#{Date.current().strftime('%Y%m%d')}"
+    "#{Base64.strict_encode64(raw_key)}"
   end
 
   def display_file_name
