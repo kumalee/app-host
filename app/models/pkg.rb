@@ -101,7 +101,6 @@ class Pkg < ApplicationRecord
 
   def download_url
     "#{Current.request.base_url}#{self.file}?id=#{self.id}&token=#{download_token}"
-    #"#{Current.request.base_url}#{self.file}"
   end
 
   def download_token

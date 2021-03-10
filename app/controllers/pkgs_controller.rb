@@ -23,12 +23,14 @@ class PkgsController < ApplicationController
 
   #ios install manifest file
   def manifest
-    unless signed_in?
-      redirect_to new_session_path and return
-    end
+    token = params[:token]
     @pkg = Pkg.find params[:id]
-    stream = render_to_string(:template=>"pkgs/manifest.xml" )  
-    render xml: stream
+    if (@pkg.download_token == token)
+      stream = render_to_string(:template=>"pkgs/manifest.xml" )
+      render xml: stream
+    else
+      render status: 403, json: { isSuccess: false, error: "Invalid Token"}
+    end
   end
 
   # validate download token
