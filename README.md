@@ -49,20 +49,21 @@ fi
 or
 >source ~/.zshrc
 4. > rbenv rehash
-5. gem install bundler -v '1.16.1'
+5. > gem install bundler -v '1.16.1'
 6. > git clone https://github.com/EFEducationFirst/app-host.git
 7. > cd app-host
-8. bundle install
-  if you get the error msg of install libv8, please use the commands under list
-  - gem install libv8 -v '3.16.14.19' -- --with-system-v8
-  - brew install v8-315
-  - gem install therubyracer -v '0.12.3' -- --with-v8-dir='/usr/local/opt/v8@3.15'
+8. > bundle install
+  // if you get the error msg of install libv8, please use the commands under list
+  - > gem install libv8 -v '3.16.14.19' -- --with-system-v8
+  - > brew install v8-315
+  - > gem install therubyracer -v '0.12.3' -- --with-v8-dir='/usr/local/opt/v8@3.15'
 9. > gem install rails
 10. > rbenv rehash
 // refresh cache of rbenv，otherwise the terminal can't find rails
 11. > rake db:migrate RAILS_ENV=development 
 // generate db
-10. rails s // run dev mode
+10. > rails s
+// run dev mode
 11. if you want deploy it to production, please read the docs of rails puma，need to change deploy address in config/deply.rb
 12. change secret_key_base for production in config/secrets.yml, you can get it by run `rake secret`
 12. visit http://localhost:3000
