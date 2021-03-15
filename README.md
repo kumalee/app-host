@@ -50,8 +50,8 @@ or
 >source ~/.zshrc
 4. > rbenv rehash
 5. gem install bundler -v '1.16.1'
-6. > git clone https://github.com/pluosi/app-host.git /opt/app-host
-7. > cd /opt/app-host
+6. > git clone https://github.com/EFEducationFirst/app-host.git
+7. > cd app-host
 8. bundle install
   if you get the error msg of install libv8, please use the commands under list
   - gem install libv8 -v '3.16.14.19' -- --with-system-v8
