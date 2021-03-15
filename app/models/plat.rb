@@ -29,7 +29,8 @@ class Plat < ApplicationRecord
 
   enum plat_name: {
     ios: 'ios',
-    android: 'android'
+    android: 'android',
+    andoridAab: 'androidAab'
   }
 
 

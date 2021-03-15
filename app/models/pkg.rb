@@ -40,7 +40,8 @@ class Pkg < ApplicationRecord
 
   enum plat_name: {
     ios: 'ios',
-    android: 'android'
+    android: 'android',
+    andoridAab: 'androidAab'
   }
 
   after_create :save_icon
