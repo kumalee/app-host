@@ -65,7 +65,7 @@ module PkgAdapter
       end
   
       def plat
-        'androidAab'
+        'androidAppBundle'
       end
   
       def app_uniq_key
