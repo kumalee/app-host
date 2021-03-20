@@ -44,11 +44,12 @@ class PkgsController < ApplicationController
     result = false
     query_params = ''
     if (origin_url)
-      uri = URI.parse(origin_url)
+      current_url = URI.decode(origin_url)
+      uri = URI.parse(current_url)
       # then use CGI.parse to parse the query string into a hash of names and values
       query_params = CGI.parse(uri.query)
-      @pkg = Pkg.find query_params["id"][0]
-      if (query_params["token"][0] == @pkg.download_token)
+      @pkg = Pkg.find query_params["id"].first
+      if (query_params["token"].first == @pkg.download_token)
         result = true
       end
     end
