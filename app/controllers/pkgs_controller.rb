@@ -23,13 +23,18 @@ class PkgsController < ApplicationController
 
   #ios install manifest file
   def manifest
-    token = params[:token]
-    @pkg = Pkg.find params[:id]
+    # rails convert & to \u0026, not %26, so we need to decode it here
+    current_url = URI.decode(request.original_url)
+    parsed_url = URI.parse(current_url)
+    query_obj = CGI::parse(parsed_url.query)
+    token = params[:token] || query_obj['token'].first
+    id = params[:id] || query_obj['id'].first
+    @pkg = Pkg.find id
     if (@pkg.download_token == token)
       stream = render_to_string(:template=>"pkgs/manifest.xml" )
       render xml: stream
     else
-      render status: 403, json: { isSuccess: false, error: "Invalid Token"}
+      render status: 403, json: { isSuccess: false, token: token, id: id, url: current_url, error: "Invalid Token"}
     end
   end
 
