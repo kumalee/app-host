@@ -22,7 +22,7 @@ A lightweight app package host server for iOS and Android. Like fir.im, can depl
 
 ## Recommend Usage: Use Docker Image on hub.docker.com
 ```
-1. docker run --name app_host -v ~/shared:/app/shared -p 3000:8686 -d kumali/app_host:latest
+1. docker run --name app_host -v ~/shared:/app/shared -p 8686:8686 -d kumali/app_host:latest
 ```
 
 ## build docker image by your own
@@ -31,19 +31,19 @@ A lightweight app package host server for iOS and Android. Like fir.im, can depl
 2. > cd /opt/app-host
 5. > ./docker/launcher bootstrap -v #depends on network status, if you are in bad network, just retry it.
 6. > ./docker/launcher start
-7. visit http://localhost:3000 , you can change `local_port` in docker/launcher
+7. visit http://localhost:8686 , you can change `local_port` in docker/launcher
 ps:db and upload files will be all in shared directory
 ```
 
 ## develop at local
 0. > brew install rbenv
-1. > rbenv install 2.5.1
+1. > rbenv install 3.2.2
 2. write init script to your .bashrc or .zshrc
 ```sh
 # setting rbenv
 if command -v rbenv 1>/dev/null 2>&1; then
   eval "$(rbenv init -)"
-  eval "$(rbenv global 2.5.1)"
+  eval "$(rbenv global 3.2.2)"
 fi
 ```
 3. source config files
@@ -51,30 +51,23 @@ fi
 or
 >source ~/.zshrc
 4. > rbenv rehash
-5. > gem install bundler -v '1.16.1'
-6. > git clone https://github.com/EFEducationFirst/app-host.git
+5. > gem install bundler
+6. > git clone ssh://git@bitbucket.eflabs.cn:7999/mobile/app-host.git
 7. > cd app-host
 8. > bundle install
-  // if you get the error msg of install libv8, please use the commands under list
-  - > gem install libv8 -v '3.16.14.19' -- --with-system-v8
-  - > brew install v8-315
-  - > gem install therubyracer -v '0.12.3' -- --with-v8-dir='/usr/local/opt/v8@3.15'
-9. > gem install rails
 10. > rbenv rehash
 // refresh cache of rbenv，otherwise the terminal can't find rails
 11. > RAILS_ENV=development rake db:migrate
 // generate db
 10. > rails s
 // run dev mode
-11. if you want deploy it to production, please read the docs of rails puma，need to change deploy address in config/deploy.rb
-12. change secret_key_base for production in config/secrets.yml, you can get it by run `rake secret`
-12. visit http://localhost:3000
+11. visit http://localhost:3000
 ```
 
 2. nginx config of passby docker container nginx service
 ```sh
 upstream apphost {
-    server localhost:3000;
+    server localhost:8686;
 }
 
 server {
@@ -86,7 +79,7 @@ server {
 server {
     server_name apphost.example.com;
 
-    client_max_body_size 500M;
+    client_max_body_size 1000M;
 
     location / {
        proxy_redirect off;
@@ -106,7 +99,7 @@ server {
 ```
 docker start command
 ```sh
-docker run -d --name app_host -h app_host -v /opt/app-host-data:/app/shared -p 3000:8686 kumali/app-host:latest
+docker run -d --name app_host -h app_host -v /opt/app-host-data:/app/shared -p 8686:8686 kumali/app_host:latest
 ```
 ## known issues
 1. if the logo of apk is not an image，can't show logo，cause we haven't analyze logo in xml

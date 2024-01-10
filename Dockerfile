@@ -1,5 +1,8 @@
-FROM ruby:3.2.2-slim
-
+# syntax=docker/dockerfile:1
+FROM registry.docker.com/library/ruby:3.2.2-slim
+ARG TARGETPLATFORM
+ARG BUILDPLATFORM
+RUN echo "I am running on $BUILDPLATFORM, building for $TARGETPLATFORM" > /log
 ENV RAILS_ENV production
 
 RUN apt-get update -qq && \
@@ -21,6 +24,6 @@ COPY docker/nginx.conf /etc/nginx/sites-enabled/app.conf
 # 编译静态文件
 RUN rake assets:precompile
 
-EXPOSE 8686 3000
+EXPOSE 8686
 
 CMD /bin/bash docker/check_prereqs.sh && service nginx start && puma -C config/puma.rb
