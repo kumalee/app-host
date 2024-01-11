@@ -1,4 +1,7 @@
 require_relative './base_adapter'
+require_relative '../bplist'
+require_relative '../plist'
+require_relative '../png'
 
 module PkgAdapter
 

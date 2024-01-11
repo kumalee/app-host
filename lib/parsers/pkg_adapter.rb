@@ -1,11 +1,7 @@
 require_relative './pkg_adapter/aab'
 require_relative './pkg_adapter/apk'
-require_relative './pkg_adapter/base_adapter'
 require_relative './pkg_adapter/config'
 require_relative './pkg_adapter/ipa'
-require_relative './plist'
-require_relative './bplist'
-require_relative './png'
 
 module PkgAdapter
 

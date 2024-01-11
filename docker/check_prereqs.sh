@@ -22,10 +22,24 @@ if [[ $existing != "" ]]; then
   echo "$secret_text" > $secret_file
 fi
 
-rm db/production.sqlite3
+rm -rf storage/production.sqlite3
+rm -rf storage/production.sqlite3-shim
+rm -rf storage/production.sqlite3-wal
 if [[ ! -f /app/shared/production.sqlite3 ]]; then
   ./bin/bundle exec rake db:migrate
-  mv db/production.sqlite3 /app/shared/production.sqlite3
+  mv storage/production.sqlite3 /app/shared/production.sqlite3
+  if [[ -f storage/production.sqlite3-shim ]]; then
+    mv storage/production.sqlite3-shim /app/shared/production.sqlite3-shim
+  fi
+  if [[ -f storage/production.sqlite3-wal ]]; then
+    mv storage/production.sqlite3-wal /app/shared/production.sqlite3-wal
+  fi
 fi
 
-ln -sf /app/shared/production.sqlite3 db/production.sqlite3
+ln -sf /app/shared/production.sqlite3 storage/production.sqlite3
+if [[ ! -f /app/shared/production.sqlite3-shim ]]; then
+  ln -sf /app/shared/production.sqlite3-shim storage/production.sqlite3-shim
+fi
+if [[ ! -f /app/shared/production.sqlite3-wal ]]; then
+  ln -sf /app/shared/production.sqlite3-wal storage/production.sqlite3-wal
+fi
