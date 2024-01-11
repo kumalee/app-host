@@ -1,0 +1,52 @@
+<div class="col-md-4 cell">
+  <% last_pkg = app.pkgs.last%>
+  <a href="<%=app_plats_path(app)%>">
+    <div class="cell-container">
+      <div class="icon">
+        <% if app.icon %>
+          <%=image_tag(app.icon.url)%>  
+        <% else %>
+          <div class="text-icon"><span><%=app.name[0,1]%></span></div>
+        <% end %>
+      </div>
+      <div class="detail">
+        <span class="title">
+          <%=app.name%>
+          <span class="date-label">
+            <% if last_pkg.present? %>
+              <%=time_ago_in_words(last_pkg.updated_at)%>前
+            <% end %>
+          </span>
+        </span>
+        <div class="halving-line">---</div>
+
+        <span class="sub-title">
+          包总数：<span><%=app.pkgs.count%></span>
+        </span> 
+        <span class="sub-title">
+          渠道数：<span><%=app.plats.count%></span>
+        </span>
+        <% if last_pkg.present? %>
+          <span class="sub-title visible-md visible-lg">
+            最新包：<span><%=last_pkg.build%> <%=last_pkg.plat&.name%></span>
+          </span>
+        <% end %>
+       
+      </div>
+
+    </div>
+    <div class="divider"></div>
+  </a>
+
+  <div class="actions visible-md visible-lg pull-right">
+    <% if can? :destroy, app %>
+      <%=link_to "", app_path(app), data: {:confirm => 'Are you sure?'}, class:"glyphicon glyphicon-remove", :method => :delete %>
+    <% end %>
+    
+    <% if can? :update, app %>
+      <%=link_to "", edit_app_path(app), class:"glyphicon glyphicon-cog" %>
+    <% end %>
+    
+  </div>
+  
+</div>

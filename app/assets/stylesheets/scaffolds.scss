@@ -1,0 +1,79 @@
+.app-host-nav {
+  margin-bottom: 0;
+  background-color: #f8f8f8;
+  border-bottom: solid 1px #DEDEDE;
+}
+.app-home-nav .app-nav-b {
+  display: none;
+}
+.app-host-nav .navbar-brand,
+.app-host-nav .navbar-nav > li > a {
+  font-weight: 500;
+  color: #03A3FC;
+}
+.app-host-nav .navbar-nav > li > a:hover,
+.app-host-nav .navbar-nav > .active > a,
+.app-host-nav .navbar-nav > .active > a:hover {
+  color: #463265;
+  background-color: #f9f9f9;
+}
+.app-host-nav .navbar-toggle .icon-bar {
+  background-color: #563d7c;
+}
+.app-host-nav .navbar-header .navbar-toggle {
+  border-color: #f0f0f0;
+}
+.app-host-nav .navbar-header .navbar-toggle:hover,
+.app-host-nav .navbar-header .navbar-toggle:focus {
+  background-color: #f9f9f9;
+  border-color: #f9f9f9;
+}
+
+.ui-plat{
+  border-radius: 2px;
+}
+.ui-color{
+  color: #03A3FC;
+}
+.ui-bgcolor{
+  background-color: #03A3FC;
+}
+
+.app{
+  input[type=text],textarea{
+    border-color: #ddd;
+    border-radius: 2px;
+  }
+}
+
+@media (min-width: 1200px){
+  .container{
+    width: 1024px;
+  }
+}
+
+@media (min-width: 901px){
+  body{
+    background-color: #F6F6F6;
+  }
+  .app-host-nav {
+    color: #463265;
+    background-color: #fff;
+  }
+}
+
+a,a:hover{
+  text-decoration: none;
+}
+
+.dropdown-menu{
+  &>li>a{
+    padding-left: 24px;
+    font-size: 14px;
+    color: #9d9d9d;
+    line-height: 30px;
+  }
+}
+.tint-text{
+  color: #999;
+}
