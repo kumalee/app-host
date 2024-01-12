@@ -37,4 +37,3 @@ runs:
         echo "namespace=$NAMESPACE" >> $GITHUB_OUTPUT
         echo "name=$NAME" >> $GITHUB_OUTPUT
         echo "version=$VERSION" >> $GITHUB_OUTPUT
-        

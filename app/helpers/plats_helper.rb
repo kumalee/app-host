@@ -5,4 +5,3 @@ module PlatsHelper
     PkgAdapter.config.adapters.map{|k,v|{v[:des] => k}}.inject(:merge)
   end
 end
-

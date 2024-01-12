@@ -137,5 +137,3 @@ module PNG
       buf
     end
 end
-
-

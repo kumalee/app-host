@@ -97,4 +97,3 @@ jobs:
           repository: efcloud/el-environments-deployer
           event-type: promote-package-version
           client-payload: '{ "repository": "${{ github.repository }}", "images": [{"name":"${{ needs.publish.outputs.name }}", "version":"${{ needs.publish.outputs.version }}"}]}'
-        
