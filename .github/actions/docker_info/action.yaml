@@ -1,0 +1,43 @@
+name: Docker-Info Action
+
+description: Set docker info vars to be used in other steps
+
+inputs:
+  aws_registry:
+    description: ecr registry url
+    required: true
+  owner:
+    description: package owner
+    required: true
+  namespace:
+    description: package namespace
+    required: true
+  name:
+    description: package name
+    required: true
+  version:
+    description: package version
+    required: true
+
+outputs:
+  docker_registry_github:
+    value: ${{ steps.docker_info.outputs.docker_github }}
+    description: package registry on github
+  docker_registry_aws:
+    value: ${{ steps.docker_info.outputs.docker_aws }}
+    description: package registry on aws
+
+runs:
+  using: composite
+  steps:
+    - id: docker_info
+      shell: bash
+      run: |
+        DOCKER_REGISTRY_GITHUB="docker.pkg.github.com/${{ github.repository }}/${{ inputs.name }}:${{ inputs.version }}"
+        DOCKER_REGISTRY_AWS="${{ inputs.aws_registry }}/${{ inputs.owner }}/${{ inputs.namespace }}/${{ inputs.name }}/${{ inputs.name }}:${{ inputs.version }}"
+
+        echo "Docker GitHub: $DOCKER_REGISTRY_GITHUB"
+        echo "Docker AWS: $DOCKER_REGISTRY_AWS"
+
+        echo "docker_github=$DOCKER_REGISTRY_GITHUB" >> $GITHUB_OUTPUT
+        echo "docker_aws=$DOCKER_REGISTRY_AWS" >> $GITHUB_OUTPUT
