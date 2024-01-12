@@ -27,7 +27,6 @@ local_image=kumali/app_host:$version
 container_name=app_host
 dockerdir=$(cd "$(dirname "$(dirname $0)")"; pwd -P)
 sharedir=$dockerdir/shared
-platform=linux/amd64,linux/arm64
 
 loginfo() {
     if [[ -t 1 ]]; then
@@ -73,12 +72,12 @@ rebuild(){
     if [[ "$quiet" == "" ]]; then
       (
         set -x
-        docker buildx build -f Dockerfile --platform $platform -t $local_image  --push .
+        docker build -f Dockerfile -t $local_image .
       )
     else
       (
         set -x
-        docker buildx build -f Dockerfile --platform $platform -t $local_image --push . >/dev/null
+        docker build -f Dockerfile -t $local_image . >/dev/null
       )
     fi
     

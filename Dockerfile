@@ -1,8 +1,4 @@
-# syntax=docker/dockerfile:1
-FROM registry.docker.com/library/ruby:3.2.2-slim
-ARG TARGETPLATFORM
-ARG BUILDPLATFORM
-RUN echo "I am running on $BUILDPLATFORM, building for $TARGETPLATFORM" > /log
+FROM ruby:3.2.2-slim
 ENV RAILS_ENV production
 
 RUN apt-get update -qq && \

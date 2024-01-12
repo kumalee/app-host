@@ -43,7 +43,6 @@ jobs:
         with:
           push: false
           load: true
-          target: runner
           tags: ${{ steps.package_info.outputs.name }}:${{ github.sha }}
           file: ./Dockerfile
           context: .
