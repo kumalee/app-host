@@ -31,7 +31,7 @@ class PkgsController < ApplicationController
     id = params[:id]
     @pkg = Pkg.find id
     # if (@pkg.download_token == token)
-    stream = render_to_string(:template=>"pkgs/manifest.xml" )
+    stream = render_to_string(:template=>"pkgs/manifest", formats: [:xml], layout: false )
     render xml: stream
     # else
     #   render status: 403, json: { isSuccess: false, token: token, id: id, url: current_url, error: "Invalid Token"}
