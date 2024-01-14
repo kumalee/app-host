@@ -44,7 +44,7 @@ class PkgsController < ApplicationController
     result = false
     query_params = ''
     if (origin_url)
-      current_url = URI.decode(origin_url)
+      current_url = CGI.unescape(origin_url)
       uri = URI.parse(current_url)
       # then use CGI.parse to parse the query string into a hash of names and values
       query_params = CGI.parse(uri.query)
