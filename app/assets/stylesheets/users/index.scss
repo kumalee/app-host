@@ -20,4 +20,10 @@
   .user-add{
     margin: 8px 0px
   }
+  .pagination-wrapper {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+  }
 }
