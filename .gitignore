@@ -35,7 +35,5 @@
 /config/master.key
 
 # add by app-host
-public/uploads
+public/uploads/*
 shared/*
-
-
