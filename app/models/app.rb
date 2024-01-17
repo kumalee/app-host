@@ -22,8 +22,10 @@
 
 class App < ApplicationRecord
 
-  scope :active, ->{ where(archived:false)}
-  scope :archived, ->{ where(archived:true)}
+  # solve boolean compatibility issue for sqlite3 between rails 5 and 7
+  # the old version of sqlite3 gem does not support boolean type, will transform it to 'f' or 't'
+  scope :active, ->{ where(["archived = :b or archived = :i", { b: 'f', i: 0 }])}
+  scope :archived, ->{ where(["archived = :b or archived = :i", { b: 't', i: 1 }])}
 
   has_many :pkgs, :dependent => :destroy
   has_many :plats, :dependent => :destroy
