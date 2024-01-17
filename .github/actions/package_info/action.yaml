@@ -1,0 +1,39 @@
+name: Package-Info Action
+
+description: Set package info vars to be used in other steps
+
+outputs:
+  owner:
+    value: ${{ steps.package_info.outputs.owner }}
+    description: package owner
+  namespace:
+    value: ${{ steps.package_info.outputs.namespace }}
+    description: package namespace
+  name:
+    value: ${{ steps.package_info.outputs.name }}
+    description: package name
+  version:
+    value: ${{ steps.package_info.outputs.version }}
+    description: package version
+
+runs:
+  using: composite
+  steps:
+    - id: package_info
+      shell: bash
+      run: |
+        OWNER=$(echo ${{ github.repository }} | cut -d'/' -f1)
+        NAME=$(echo ${{ github.repository }} | cut -d'/' -f2)
+        NAMESPACE=$(echo ${NAME} | cut -d'-' -f1)
+        [[ "${NAMESPACE}" != "gap" ]] && NAMESPACE="el"
+        VERSION=$(echo ${GITHUB_REF} | rev | cut -d/ -f1 | rev | sed 's/v//g')
+
+        echo "Package owner: $OWNER"
+        echo "Package namespace: $NAMESPACE"
+        echo "Package name: $NAME"
+        echo "Package version: $VERSION"
+
+        echo "owner=$OWNER" >> $GITHUB_OUTPUT
+        echo "namespace=$NAMESPACE" >> $GITHUB_OUTPUT
+        echo "name=$NAME" >> $GITHUB_OUTPUT
+        echo "version=$VERSION" >> $GITHUB_OUTPUT

@@ -1,0 +1,148 @@
+<%=render 'layouts/header'%>
+
+<div class="pkg show">
+
+  <div class="wx-mask">
+    <%=image_tag("weixin_mask.png")%>
+  </div>
+
+  <ul class="breadcrumb container">
+    <li>
+      <%=link_to @pkg.app.name, app_path(@pkg.app)%>
+    </li>
+    <li>
+      <%=link_to @pkg.plat.name, app_plat_path(@pkg.app,@pkg.plat)%>
+    </li>
+    <li class="active"><%=@pkg.name%></li>
+  </ul>
+
+  <div class="first-page">
+    <div class="info-container">
+      <div class="app-info">
+        <div class="icon">
+          <%=image_tag(@pkg.icon.url)%>
+        </div>
+        <div class="title"><%=@pkg.name%></div>
+        <div class="info">
+          <%="版本:#{@pkg.version}, build:#{@pkg.build}"%>, <%=@pkg.size_mb%>MB 
+          <br>
+          <%=@pkg.created_at&.strftime("%Y-%m-%d %R") %> 
+        </div>
+      </div>
+
+      <% if @download_url.present? %>
+        <a class="download-btn" href="<%=@download_url%>">
+          下载
+        </a>
+      <% else %>
+        <a class="download-btn">
+          无法下载
+        </a>
+      <% end %>
+
+    </div>
+  </div>
+
+  <div class="qrcode">
+    <div id="qrcode"></div>
+    <label>或者用手机扫描下面的二维码安装</label>
+  </div>
+
+
+  <% if @pkg.features.present? %>
+    <div class="features">
+      <div class="wrap">
+        <h3 class="title">变更描述:</h3>
+        <p class="info">
+          <%@pkg.features.split("\n").each do |line|%>
+            <%=line%><br/>
+          <%end%>
+        </p>
+      </div>
+    </div>
+  <% end %>
+
+  <% @ext_info = @pkg.ext_info %>
+  <% if @ext_info.present? %>
+    <div class="extend-info">
+      <div class="wrap">
+        <div class="open-icon">
+          <span>扩展信息:</span>
+          <a class="glyphicon glyphicon-chevron-down"></a>
+        </div>
+        <p class="info" style="display: none;">
+         <% if @ext_info.is_a?(Hash) %>
+           <% @ext_info.each do |tilte,lines| %>
+             <%=tilte%>:
+             <% if lines.is_a?(Array) %>
+               <%lines.each do |line| %>
+                <br>
+                &nbsp;&nbsp;&nbsp;-&nbsp;<%=line%>
+               <% end %>
+             <% else %>
+                &nbsp;<%=lines%>
+             <% end %>
+             <br>
+           <% end %>
+         <% else %>
+          <%=@ext_info%>
+         <% end %>
+        </p>  
+      </div>
+    </div>
+  <% end %>
+  
+
+  <% if @history.present? %>
+    <div class="history">
+      <div class="wrap">
+        <h3 class="title">历史版本</h3>
+        <div class="day-block">
+          <% @history.each do |key,value| %>
+            <label class="title">
+               <%=key%>
+            </label>
+            <ul>
+              <%value.each do |v|%>
+                <li>
+                  <a href="<%=pkg_path(v)%>">
+                    <%="#{v.version}(#{v.build})"%>&nbsp;&nbsp;<%="#{v.size_mb}MB"%>&nbsp;&nbsp;<%="#{v.created_at.strftime('%R')}"%>
+                  </a>
+                </li>
+              <%end%>
+            </ul>
+          <% end %>
+        </div>
+      </div>
+    </div>
+  <% end %>
+  
+  <footer class="footer">
+    <a href="https://github.com/pluosi">- pluosi.com -</a>
+  </footer>
+</div>
+
+<script type="text/javascript">
+
+  var isWeixin = function () { //判断是否是微信
+    var ua = navigator.userAgent.toLowerCase();
+    return ua.match(/MicroMessenger/i) == "micromessenger";
+  };
+
+  $(function(){
+    $('#qrcode').empty();
+    new QRCode(document.getElementById("qrcode"), "<%=pkg_url(@pkg)%>");
+    $(".open-icon").click(function(event) {
+      $(".extend-info>.wrap>.info").slideToggle('fast')
+    });
+
+    if (isWeixin()) {
+      $(".download-btn").click(function() {
+        $(".wx-mask").show();
+        return false;
+      })
+    }
+
+  });
+
+</script>

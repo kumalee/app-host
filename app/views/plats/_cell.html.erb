@@ -1,0 +1,38 @@
+<div class="col-md-12 cell">
+  <a href="<%=pkg_path(pkg)%>">
+
+    <div class="cell-container">
+      <div class="icon">
+        <%=image_tag(pkg.icon.url)%>
+      </div>
+      <div class="detail">
+        <span class="title">
+          <%=pkg.file_nick_name%>
+          <span class="date-label tint-text">
+            <%=time_ago_in_words pkg.created_at %>前
+          </span>
+        </span>
+
+        <span class="sub-title">
+         <%=pkg.name%> <span class="tint-text"><%="#{pkg.version}, build:#{pkg.build}"%></span>
+        </span>
+      
+        <div class="actions">
+          <% download_url = (browser.platform.android? || browser.platform.ios?) ? pkg.install_url : pkg.download_url %>
+
+          <% unless (browser.platform.ios? && !pkg.ios?) || (browser.platform.android? && !pkg.android?) %>
+            <a class="download-btn" href="<%=download_url%>">
+              下载
+            </a>
+          <% end %>
+
+          <% if can? :destroy, pkg %>
+            <%=button_to '删除', plat_pkg_path(pkg.plat, pkg), form_class: "delete_btn", class:"btn-danger", data: {:confirm => 'Are you sure?'}, :method => :delete %>
+          <% end %>
+          
+        </div>
+      </div>
+    </div>
+    <div class="divider"></div>
+  </a>
+</div>

@@ -1,0 +1,30 @@
+<%=render 'layouts/header'%>
+
+<div class="container app index app-host-container">
+
+<%=render 'comoms/alert'%>
+
+<div class="row">
+  <% if can? :create, App %>
+    <div class="visible-md visible-lg">
+      <%=render "cell_add" %>
+    </div>
+  <% end %>
+  
+  <%= render partial: "cell", collection: @apps, as: :app %>
+
+  <% if @has_archived %>
+    <div class="col-md-4 cell archived">
+      <a href="/apps/archived">
+        <div class="cell-container">
+          <span class="glyphicon glyphicon-floppy-disk" aria-hidden="true"></span>
+          <span>Archived</span>
+        </div>
+        <div class="divider"></div>
+      </a>
+    </div>
+  <% end %>
+  
+</div>
+
+</div>
