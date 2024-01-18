@@ -51,7 +51,7 @@ jobs:
           owner: ${{ steps.package_info.outputs.owner }}
           namespace: ${{ steps.package_info.outputs.namespace }}
           name: ${{ steps.package_info.outputs.name }}
-          version: ${{ inputs.package_info.outputs.version }}
+          version: ${{ steps.package_info.outputs.version }}
 
       - name: docker publish
         env:
