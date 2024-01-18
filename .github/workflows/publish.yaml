@@ -43,7 +43,7 @@ jobs:
           owner: ${{ steps.package_info.outputs.owner }}
           namespace: ${{ steps.package_info.outputs.namespace }}
           name: ${{ steps.package_info.outputs.name }}
-          version: ${{ inputs.package_info.outputs.version }}
+          version: ${{ steps.package_info.outputs.version }}
 
       - name: set up Docker Buildx
         uses: docker/setup-buildx-action@v2
