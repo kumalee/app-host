@@ -3,8 +3,8 @@ ENV RAILS_ENV production
 
 RUN apt-get update -qq && \
     apt-get install -y --no-install-recommends \
-        build-essential git pkg-config \
-        curl libsqlite3-0 libvips nodejs npm \
+        build-essential git sqlite3 pkg-config \
+        curl libsqlite3-dev libvips nodejs \
         imagemagick nginx && \
     rm -rf /var/lib/apt/lists /var/cache/apt/archives
 
@@ -18,7 +18,7 @@ COPY . .
 COPY docker/nginx.conf /etc/nginx/sites-enabled/app.conf
 
 # 编译静态文件
-RUN rake assets:precompile
+RUN ./bin/rake assets:precompile
 
 EXPOSE 8686
 
